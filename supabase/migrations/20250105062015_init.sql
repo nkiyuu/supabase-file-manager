@@ -1,11 +1,10 @@
 CREATE TABLE folders (
     id SERIAL PRIMARY KEY,
     folder_name VARCHAR(255) NOT NULL,
-    parent_folder_id INTEGER REFERENCES folders(id),
+    parent_folder_id INTEGER REFERENCES folders(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     access_permissions TEXT,
-    user_id INTEGER REFERENCES auth.users(id),
-    file_id INTEGER REFERENCES files(id)
+    creator_id UUID REFERENCES auth.users(id) ON DELETE SET NULL
 );
 
 CREATE TABLE files (
@@ -16,5 +15,5 @@ CREATE TABLE files (
     folder_id INTEGER REFERENCES folders(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    creator_id INTEGER REFERENCES auth.users(id)
+    creator_id UUID REFERENCES auth.users(id)
 );
